@@ -6,3 +6,52 @@ const bodyParser = require("body-parser");
 const { ObjectID } = require("mongodb");
 
 var { mongoose } = require("./db/mongoose");
+var { Courier } = require("./models/Courier");
+var { Item } = require("./models/Package");
+var { User } = require("./models/User");
+var { Order } = require("./models/Order");
+
+var app = express();
+const port = process.env.PORT;
+
+app.use(bodyParser.json());
+
+app.get("/", (req, res) => {
+  res.send('Getir Hackathon18 "aba" backend');
+});
+
+app.get("/orders", (req, res) => {
+  // Should find orders of current user
+  Order.find().then(
+    orders => {
+      res.send({ orders });
+    },
+    e => {
+      res.status(400).send(e);
+    }
+  );
+});
+
+app.get("/couriers", (req, res) => {
+  // Should find available couriers
+  Courier.find().then(
+    couriers => {
+      res.send({ couriers });
+    },
+    e => {
+      res.status(400).send(e);
+    }
+  );
+});
+
+// Find couriers near a geo point within a radius
+// app.post("/couriersAround", (req, res) => {});
+
+// add new orders
+// app.post("/giveOrder", (req, res) => {});
+
+app.listen(port, () => {
+  console.log(`Started up at port ${port}`);
+});
+
+module.exports = { app };
