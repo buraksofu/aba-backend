@@ -6,10 +6,10 @@ const bodyParser = require("body-parser");
 const { ObjectID } = require("mongodb");
 
 var { mongoose } = require("./db/mongoose");
-var { Courier } = require("./models/Courier");
-var { Item } = require("./models/Package");
-var { User } = require("./models/User");
-var { Order } = require("./models/Order");
+var { Courier } = require("./models/courier");
+var { Item } = require("./models/item");
+var { User } = require("./models/user");
+var { Order } = require("./models/order");
 
 var app = express();
 const port = process.env.PORT;

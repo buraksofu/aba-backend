@@ -1,5 +1,5 @@
 var mongoose = require("mongoose");
-var { Item } = require("./models/Package");
+var { Item } = require("./item");
 
 var Order = mongoose.model("Order", {
   courierName: {
@@ -13,11 +13,11 @@ var Order = mongoose.model("Order", {
     required: true,
     trim: true,
     minlength: 1
-  },
-  item: {
-    type: Item,
-    required: true
   }
+  // item: {
+  //   type: Item,
+  //   required: true
+  // }
 });
 
 module.exports = { Order };
