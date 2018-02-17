@@ -6,4 +6,19 @@ Team **aba**:
 * Burak Sofu
 * Anıl Yerlikaya
 
-Öneri 2
+## iste ##
+
+Bulundukları veya  gidecekleri yerlerden ürün sipariş verebileceğin kişileri kolayca bul, istediğin ürünü sipariş et!
+
+### Proje Detayları ###
+
+* Uygulamada harita üzerinden konum seçip veya adres girerek yakın zamanda o bölgeye gidecek kuryeleri bul, limitleri uygunsa sipariş ver.
+* Kuryelerin ürün ve ağırlık limiti var. Müşteri her zaman müsait kuryeleri görür.
+* Mevcut siparişleri listele, ekle-çıkar.
+
+### Teknolojiler ###
+
+* NodeJS Backend
+  * MongoDB
+  * Express
+* Android Uygulama
