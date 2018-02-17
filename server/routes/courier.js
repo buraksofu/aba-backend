@@ -1,6 +1,8 @@
 var express = require("express");
 var router = express.Router();
+var axios = require("axios");
 var bodyParser = require("body-parser");
+const { ObjectID } = require("mongodb");
 var Courier = require("../models/courier");
 var inRange = require("../../helpers/range");
 var query = require("../../helpers/query");
@@ -36,7 +38,6 @@ router.post("/availableByPoint", async (req, res) => {
   // retrieve all couriers location objects
   var couriers = await Courier.aggregate(query(req.body));
   var point = req.body;
-
   var result = inRange(point, couriers)
     .then(result => {
       res.status(200).send(result);
@@ -45,19 +46,20 @@ router.post("/availableByPoint", async (req, res) => {
       res.status(400).send(err);
     });
 
-  // res.json({ code: 0, msg: "Success", couriers });
   // send them along with the req.point to the helper function "range.js"
-  // respont to the client available courier locations
+  // respond to the client available courier locations
 });
 
 /**
  * returns available couriers that customer
  * can order inside a given range and by a given address string
  */
-router.post("/availableByLocation", (req, res) => {
+router.post("/availableByLocation", async (req, res) => {
   // Should check if address is sent in request!
   var encodedAddress = encodeURIComponent(req.body.address);
   var geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodedAddress}&key=AIzaSyCi5yPbz6YZ4EyrJsoKFZ4vaa-NBzqDc04`;
+  var couriers = await Courier.aggregate(query(point));
+  var point;
   axios
     .get(geocodeUrl)
     .then(response => {
@@ -67,15 +69,36 @@ router.post("/availableByLocation", (req, res) => {
 
       var lat = response.data.results[0].geometry.location.lat;
       var lng = response.data.results[0].geometry.location.lng;
-      console.log(response.data.results[0].formatted_address);
-      res.send({ Lat: lat, Lng: lng });
+      point = { location: { lat: lat, lng: lng } };
+      // console.log(response.data.results[0].formatted_address);
+      var result = inRange(point, couriers).then(result => {
+        res.status(200).send(result);
+      });
     })
     .catch(e => {
       res.status(400).send(e);
     });
 });
 
-router.get("/courier/:id", (req, res) => {
+/**
+ * Returns all couriers sorted by their arrival time,
+ * the one that returns earliest is on top
+ */
+router.get("/", (req, res) => {
+  Courier.find({}, { sort: ["arrivalDate", "asc"] }).then(
+    courier => {
+      res.send({ courier });
+    },
+    e => {
+      res.status(400).send(e);
+    }
+  );
+});
+
+/**
+ * Get a courier by ObjectID parameter
+ */
+router.get("/:id", (req, res) => {
   var id = req.params.id;
 
   if (!ObjectID.isValid(id)) {
