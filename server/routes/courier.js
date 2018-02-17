@@ -2,8 +2,12 @@ var express = require("express");
 var router = express.Router();
 var bodyParser = require("body-parser");
 var Courier = require("../models/courier");
+var inRange = require("../../helpers/range");
 var query = require("../../helpers/query");
 
+/**
+ * creates new courier document by the Courier scheme
+ */
 router.post("/create", (req, res) => {
   var courier = new Courier({
     name: req.body.name,
@@ -24,15 +28,32 @@ router.post("/create", (req, res) => {
   );
 });
 
+/**
+ * returns available couriers that customer
+ * can order inside a given range and by a given point object
+ */
 router.post("/availableByPoint", async (req, res) => {
   // retrieve all couriers location objects
   var couriers = await Courier.aggregate(query(req.body));
-  var point = req.body.location;
-  res.json({ code: 0, msg: "Success", couriers });
+  var point = req.body;
+
+  var result = inRange(point, couriers)
+    .then(result => {
+      res.status(200).send(result);
+    })
+    .catch(err => {
+      res.status(400).send(err);
+    });
+
+  // res.json({ code: 0, msg: "Success", couriers });
   // send them along with the req.point to the helper function "range.js"
   // respont to the client available courier locations
 });
 
+/**
+ * returns available couriers that customer
+ * can order inside a given range and by a given address string
+ */
 router.post("/availableByLocation", (req, res) => {
   // Should check if address is sent in request!
   var encodedAddress = encodeURIComponent(req.body.address);

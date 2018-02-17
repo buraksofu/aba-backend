@@ -1,6 +1,23 @@
 const geodist = require("geodist");
 
-// retrieve locations of all couriers
-// filter the ones who are in the range of 300km to the given point
-
-module.exports = point => {};
+/**
+ *
+ * @param {Json Object} point - geopoint object
+ * @param {Array} couriers - location array of couriers
+ * @param {Number} range - max range allowed from the center
+ */
+module.exports = (point, couriers, range = 300) => {
+  return new Promise((resolve, reject) => {
+    if (!point.location) {
+      reject("Point should have location object!");
+    }
+    const result = couriers.filter(
+      courier =>
+        geodist(
+          { lat: point.location.lat, lng: point.location.lng },
+          { lat: courier.location.lat, lng: courier.location.lng }
+        ) <= range
+    );
+    resolve(result);
+  });
+};
