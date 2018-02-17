@@ -7,8 +7,11 @@ var User = mongoose.model("User", {
     trim: true,
     minlength: 1
   },
-  location: { type: [Number], index: { type: "2dsphere", sparse: true } }
+  location: {
+    lat: { type: Number },
+    lng: { type: Number }
+  }
   // orders: {}
 });
 
-module.exports = { User };
+module.exports = User;

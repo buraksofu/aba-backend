@@ -17,7 +17,18 @@ var Courier = mongoose.model("Courier", {
     required: true,
     default: 5
   },
-  location: { type: [Number], index: { type: "2dsphere", sparse: true } }
+  location: {
+    lat: { type: Number },
+    lng: { type: Number }
+  },
+  travelDate: {
+    type: Date,
+    required: true
+  },
+  arrivalDate: {
+    type: Date,
+    required: true
+  }
 });
 
-module.exports = { Courier };
+module.exports = Courier;

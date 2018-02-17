@@ -6,4 +6,4 @@ var Order = mongoose.model("Order", {
   item: { type: mongoose.Schema.Types.ObjectId, ref: "Item" }
 });
 
-module.exports = { Order };
+module.exports = Order;
