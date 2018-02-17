@@ -85,7 +85,7 @@ router.post("/availableByLocation", async (req, res) => {
  * the one that returns earliest is on top
  */
 router.get("/", (req, res) => {
-  Courier.find({}, { name: 1, arrivalDate: 1 })
+  Courier.find({}, { name: 1, location: 1, itemLimit: 1, weightLimit: 1 })
     .sort({ arrivalDate: -1 })
     .then(
       courier => {
