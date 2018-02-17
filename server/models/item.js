@@ -5,7 +5,7 @@ var Item = mongoose.model("Item", {
     type: Number,
     required: true
   },
-  size: {
+  weight: {
     type: Number,
     required: true
   }

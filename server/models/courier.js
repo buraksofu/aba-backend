@@ -17,10 +17,7 @@ var Courier = mongoose.model("Courier", {
     required: true,
     default: 5
   },
-  location: {
-    type: String,
-    required: true
-  }
+  location: { type: [Number], index: { type: "2dsphere", sparse: true } }
 });
 
 module.exports = { Courier };

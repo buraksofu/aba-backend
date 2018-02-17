@@ -1,23 +1,9 @@
 var mongoose = require("mongoose");
-var { Item } = require("./item");
 
 var Order = mongoose.model("Order", {
-  courierName: {
-    type: String,
-    required: true,
-    trim: true,
-    minlength: 1
-  },
-  customerName: {
-    type: String,
-    required: true,
-    trim: true,
-    minlength: 1
-  }
-  // item: {
-  //   type: Item,
-  //   required: true
-  // }
+  courier: { type: mongoose.Schema.Types.ObjectId, ref: "Courier" },
+  customer: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  item: { type: mongoose.Schema.Types.ObjectId, ref: "Item" }
 });
 
 module.exports = { Order };

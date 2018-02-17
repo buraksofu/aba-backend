@@ -7,11 +7,8 @@ var User = mongoose.model("User", {
     trim: true,
     minlength: 1
   },
-  location: {
-    type: String,
-    required: true
-  },
-  orders: {}
+  location: { type: [Number], index: { type: "2dsphere", sparse: true } }
+  // orders: {}
 });
 
 module.exports = { User };

@@ -9,13 +9,14 @@ const { ObjectID } = require("mongodb");
 var { mongoose } = require("./db/mongoose");
 var { Courier } = require("./models/courier");
 var { Item } = require("./models/item");
-var { User } = require("./models/user");
 var { Order } = require("./models/order");
+var UserRoute = require("./routes/user");
 
 var app = express();
 const port = process.env.PORT;
 
 app.use(bodyParser.json());
+app.use("/user", UserRoute);
 
 app.get("/", (req, res) => {
   res.send('Getir Hackathon18 "aba" backend');
@@ -25,7 +26,6 @@ app.post("/location", (req, res) => {
   // Should check if address is sent in request!
   var encodedAddress = encodeURIComponent(req.body.address);
   var geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodedAddress}&key=AIzaSyCi5yPbz6YZ4EyrJsoKFZ4vaa-NBzqDc04`;
-  console.log(encodedAddress);
   axios
     .get(geocodeUrl)
     .then(response => {
