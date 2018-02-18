@@ -5,10 +5,12 @@ var _ = require("lodash");
 var { ObjectID } = require("mongodb");
 var Order = require("../models/user");
 
+// Should be checked if order can be assigned to courier
+// in case of itemLimit and weightLimit
 router.post("/create", (req, res) => {
   var courierID = req.body.courier,
-    customerID = req.body.customer,
-    //itemID = req.body.item;
+    customerID = req.body.customer;
+  //itemID = req.body.item;
 
   if (!(ObjectID.isValid(courierID) && ObjectID.isValid(customerID))) {
     return res.status(404).send();
