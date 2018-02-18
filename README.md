@@ -21,4 +21,9 @@ Bulundukları veya  gidecekleri yerlerden ürün sipariş verebileceğin kişile
 * NodeJS Backend
   * MongoDB
   * Express
+  * Heroku
 * Android Uygulama
+
+### Server ###
+
+https://aba-iste.herokuapp.com/
