@@ -71,10 +71,9 @@ router.post("/availableByLocation", async (req, res) => {
       var lng = response.data.results[0].geometry.location.lng;
       point = { location: { lat: lat, lng: lng } };
       // console.log(response.data.results[0].formatted_address);
-      var results = [point];
       inRange(point, couriers).then(result => {
-        results.push(result);
-        res.status(200).send(results);
+        result.push(point);
+        res.status(200).send(result);
       });
     })
     .catch(e => {
