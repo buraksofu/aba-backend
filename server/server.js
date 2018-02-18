@@ -24,30 +24,6 @@ app.get("/", (req, res) => {
   res.send("----->iste<-----");
 });
 
-app.get("/orders", (req, res) => {
-  // Should find orders of current user
-  Order.find().then(
-    orders => {
-      res.send({ orders });
-    },
-    e => {
-      res.status(400).send(e);
-    }
-  );
-});
-
-app.get("/couriers", (req, res) => {
-  // Should find available couriers
-  Courier.find().then(
-    couriers => {
-      res.send({ couriers });
-    },
-    e => {
-      res.status(400).send(e);
-    }
-  );
-});
-
 // Find couriers near a geo point within a radius
 // app.post("/couriersAround", (req, res) => {});
 

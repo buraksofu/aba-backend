@@ -3,13 +3,13 @@ var router = express.Router();
 var bodyParser = require("body-parser");
 var _ = require("lodash");
 var { ObjectID } = require("mongodb");
-var Order = require("../models/user");
+var Order = require("../models/order");
 
 // Should be checked if order can be assigned to courier
 // in case of itemLimit and weightLimit
 router.post("/create", (req, res) => {
-  var courierID = req.body.courier,
-    customerID = req.body.customer;
+  var courierID = req.body.courier;
+  var customerID = req.body.customer;
   //itemID = req.body.item;
 
   if (!(ObjectID.isValid(courierID) && ObjectID.isValid(customerID))) {
@@ -19,7 +19,6 @@ router.post("/create", (req, res) => {
   var order = new Order({
     courier: courierID,
     customer: customerID,
-    //item: itemID,
     item: {
       itemName: req.body.item.itemName,
       price: req.body.item.price,

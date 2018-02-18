@@ -5,6 +5,9 @@ const { ObjectID } = require("mongodb");
 var User = require("../models/user");
 var Order = require("../models/order");
 
+/**
+ *
+ */
 router.post("/create", (req, res) => {
   var user = new User({
     name: req.body.name,
@@ -21,6 +24,9 @@ router.post("/create", (req, res) => {
   );
 });
 
+/**
+ *
+ */
 router.get("/:id", (req, res) => {
   var id = req.params.id;
   console.log(id);
@@ -40,6 +46,9 @@ router.get("/:id", (req, res) => {
     });
 });
 
+/**
+ *
+ */
 router.get("/:id/orders", (req, res) => {
   var id = req.params.id;
 
@@ -47,12 +56,14 @@ router.get("/:id/orders", (req, res) => {
     return res.status(404).send();
   }
 
-  User.findById(id)
-    .then(user => {
-      if (!user) {
-        return res.status(404).send();
-      }
-      var orders = Order.find({ customer: ObjectID(id) });
+  User.findById(id).then(user => {
+    if (!user) {
+      return res.status(404).send();
+    }
+  });
+
+  Order.find({ customer: ObjectID(id) })
+    .then(orders => {
       res.send({ orders });
     })
     .catch(e => {
