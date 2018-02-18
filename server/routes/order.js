@@ -1,7 +1,8 @@
 var express = require("express");
 var router = express.Router();
 var bodyParser = require("body-parser");
-const { ObjectID } = require("mongodb");
+var _ = require("lodash");
+var { ObjectID } = require("mongodb");
 var Order = require("../models/user");
 
 router.post("/create", (req, res) => {
@@ -31,6 +32,37 @@ router.post("/create", (req, res) => {
 });
 
 /**
+ * Update an orders count
+ */
+router.patch("/:id", (req, res) => {
+  var id = req.params.id;
+  var body = _.pick(req.body, ["text", "completed"]);
+
+  if (!ObjectID.isValid(id)) {
+    return res.status(404).send();
+  }
+
+  if (_.isBoolean(body.completed) && body.completed) {
+    body.completedAt = new Date().getTime();
+  } else {
+    body.completed = false;
+    body.completedAt = null;
+  }
+
+  Todo.findByIdAndUpdate(id, { $set: body }, { new: true })
+    .then(todo => {
+      if (!todo) {
+        return res.status(404).send();
+      }
+
+      res.send({ todo });
+    })
+    .catch(e => {
+      res.status(400).send();
+    });
+});
+
+/**
  * Get all orders
  */
 router.get("/", (req, res) => {
@@ -45,7 +77,7 @@ router.get("/", (req, res) => {
 });
 
 /**
- * Get a courier by ObjectID parameter
+ * Get an by ObjectID parameter
  */
 router.get("/:id", (req, res) => {
   var id = req.params.id;
