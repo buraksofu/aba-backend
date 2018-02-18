@@ -4,26 +4,32 @@ var bodyParser = require("body-parser");
 var _ = require("lodash");
 var { ObjectID } = require("mongodb");
 var Order = require("../models/order");
+var isAvailable = require("../../helpers/available");
 
 // Should be checked if order can be assigned to courier
 // in case of itemLimit and weightLimit
 router.post("/create", (req, res) => {
   var courierID = req.body.courier;
   var customerID = req.body.customer;
+  var item = req.body.item;
   //itemID = req.body.item;
 
   if (!(ObjectID.isValid(courierID) && ObjectID.isValid(customerID))) {
     return res.status(404).send();
   }
 
+  if (!isAvailable(courierID, item.weight, item.count)) {
+    return res.status(400).send();
+  }
+
   var order = new Order({
     courier: courierID,
     customer: customerID,
     item: {
-      itemName: req.body.item.itemName,
-      price: req.body.item.price,
-      weight: req.body.item.weight,
-      count: req.body.item.count
+      itemName: item.itemName,
+      price: item.price,
+      weight: item.weight,
+      count: item.count
     }
   });
 
