@@ -64,7 +64,7 @@ router.get("/:id/orders", (req, res) => {
 
   Order.find({ customer: ObjectID(id) })
     .then(orders => {
-      res.send({ orders });
+      res.send(orders);
     })
     .catch(e => {
       res.status(400).send();

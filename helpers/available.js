@@ -4,16 +4,17 @@ var Order = require("../models/order");
 const { ObjectID } = require("mongodb");
 
 module.exports = (courier, weight, count) => {
-  // return new Promise((resolve, reject) => {
-  //   var orders;
-  //   Order.find({ courier: courier }, { item: 1 }).then(
-  //     order => {
-  //       orders = order;
-  //     },
-  //     e => {
-  //       res.status(400).send(e);
-  //     }
-  //   );
-
+  return new Promise((resolve, reject) => {
+    Order.find({ courier: courier }, { item: 1 }).then(
+      orders => {
+        /* from orders array: sum item counts and compare with count,
+          sum weights*count and compare with weight
+          return boolean acccordingly
+          */
+      },
+      e => {
+        res.status(400).send(e);
+      }
+    );
   });
 };
