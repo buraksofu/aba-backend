@@ -21,6 +21,7 @@ app.use("/orders", OrderRoute);
 
 app.get("/", (req, res) => {
   res.send('Getir Hackathon18 "aba" backend');
+  res.send("----->iste<-----");
 });
 
 app.get("/orders", (req, res) => {

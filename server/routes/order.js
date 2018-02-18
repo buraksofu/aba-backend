@@ -8,17 +8,22 @@ var Order = require("../models/user");
 router.post("/create", (req, res) => {
   var courierID = req.body.courier,
     customerID = req.body.customer,
-    itemID = req.body.item;
+    //itemID = req.body.item;
 
-  if (!(ObjectID.isValid(id) && ObjectID.isValid(id) && ObjectID.isValid(id))) {
+  if (!(ObjectID.isValid(courierID) && ObjectID.isValid(customerID))) {
     return res.status(404).send();
   }
 
   var order = new Order({
     courier: courierID,
     customer: customerID,
-    item: itemID,
-    count: req.body.count
+    //item: itemID,
+    item: {
+      itemName: req.body.item.itemName,
+      price: req.body.item.price,
+      weight: req.body.item.weight,
+      count: req.body.item.count
+    }
   });
 
   order.save().then(
@@ -34,33 +39,27 @@ router.post("/create", (req, res) => {
 /**
  * Update an orders count
  */
-router.patch("/:id", (req, res) => {
-  var id = req.params.id;
-  var body = _.pick(req.body, ["text", "completed"]);
 
-  if (!ObjectID.isValid(id)) {
-    return res.status(404).send();
-  }
+//  router.patch("/:id", (req, res) => {
+//   var id = req.params.id;
+//   var body = _.pick(req.body, ["count"]);
 
-  if (_.isBoolean(body.completed) && body.completed) {
-    body.completedAt = new Date().getTime();
-  } else {
-    body.completed = false;
-    body.completedAt = null;
-  }
+//   if (!ObjectID.isValid(id)) {
+//     return res.status(404).send();
+//   }
 
-  Todo.findByIdAndUpdate(id, { $set: body }, { new: true })
-    .then(todo => {
-      if (!todo) {
-        return res.status(404).send();
-      }
+//   Order.findByIdAndUpdate(id, { $set: body }, { new: true })
+//     .then(order => {
+//       if (!order) {
+//         return res.status(404).send();
+//       }
 
-      res.send({ todo });
-    })
-    .catch(e => {
-      res.status(400).send();
-    });
-});
+//       res.send({ order });
+//     })
+//     .catch(e => {
+//       res.status(400).send();
+//     });
+// });
 
 /**
  * Get all orders
